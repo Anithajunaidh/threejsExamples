@@ -1,0 +1,30 @@
+/* login.css */
+
+/* Example styles for the login page */
+.login-container {
+  background-color: #f4f4f4;
+  padding: 20px;
+  margin:auto;
+  width:50%;
+  border:1px solid #007bff;
+  margin-top: 2rem;
+}
+
+.login-form {
+  border: 1px solid #ccc;
+  padding: 20px;
+}
+
+.login-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.login-link{
+padding-right: 2rem;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.875rem; 
+}

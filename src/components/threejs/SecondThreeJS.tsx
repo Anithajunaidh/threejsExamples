@@ -1,0 +1,105 @@
+'use client';
+
+// pages/threePage.js
+import React, { useEffect } from 'react';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
+
+
+const SecondThreeJS = () => {
+  useEffect(() => {
+    // Set up Three.js scene
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000,
+    );
+    const renderer = new THREE.WebGLRenderer();
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0xffffff); // Set background color to white
+
+    document.body.appendChild(renderer.domElement);
+
+    //Add orbit controls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true; // optional, enables smooth camera movement
+    controls.dampingFactor = 0.25; // optional, adjusts damping strength
+    // Create a cube
+    const geometry = new THREE.PlaneGeometry();
+    const material = new THREE.MeshBasicMaterial({ color: 0xff00ff });
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    // Set up camera position
+    camera.position.z = 5;
+
+ // Load 3D model
+ const loader = new GLTFLoader();
+ loader.load(
+   // Path to your model file
+   "/assets/models/roof_tiles_14_4k.gltf",
+   // onLoad callback
+   (gltf) => {
+    console.log(gltf);
+     // Add the loaded model to your scene
+     scene.add(gltf.scene);
+     gltf.scene.traverse(o=>{
+       if(o.isMesh){
+      //   o.geometry.center();
+      //   o.scale.set(10,10,10);
+      o.material=material;
+       }
+     })
+   },
+   // onProgress callback (optional)
+   (xhr) => {
+     console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
+   },
+   // onError callback (optional)
+   (error) => {
+     console.error('An error happened', error);
+   }
+ );
+
+    // Animation loop
+    const animate = () => {
+      requestAnimationFrame(animate);
+
+      // Rotate the cube
+      // cube.rotation.x += 0.01;
+      // cube.rotation.y += 0.01;
+      controls.update();
+      renderer.render(scene, camera);
+    };
+
+    animate();
+
+    // Handle window resize
+    const handleResize = () => {
+      const newWidth = window.innerWidth;
+      const newHeight = window.innerHeight;
+
+      camera.aspect = newWidth / newHeight;
+      camera.updateProjectionMatrix();
+
+      renderer.setSize(newWidth, newHeight);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up Three.js objects on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      document.body.removeChild(renderer.domElement);
+    };
+  }, []);
+
+  return <div />;
+};
+
+export default SecondThreeJS;
