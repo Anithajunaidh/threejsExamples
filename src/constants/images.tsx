@@ -1,4 +1,5 @@
-const images = {
+
+const imageConstants = {
   logo: '/assets/images/landing-page/logo.svg',
   heroBackground:'/assets/images/landing-page/wave.svg',
   heroImage:'/assets/images/landing-page/hero_image.svg',
@@ -63,5 +64,4 @@ const images = {
 
   // Add more image constants as needed
 };
-
-export default images;
+export default imageConstants;

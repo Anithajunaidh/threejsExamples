@@ -55,6 +55,7 @@
     ".storybook/*.ts",
     ".next/types/**/*.ts",
     "src/libs/Env.mjs",
-    "src/components/threejs/wavyImages/customMaterial.js"
+    "src/components/threejs/wavyImages/customMaterial.js",
+    "src/components/threejsSamples/rippleAnimation.jsx"
   ]
 }
