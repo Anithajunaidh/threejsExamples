@@ -30,9 +30,13 @@ const FirstThreeJS = () => {
     camera.position.z = 5;
     //create scene function
     const createScene=()=>{
-      let scene=new THREE.({
+      let scene=new THREE.Scene();
+      let material=new THREE.MeshMatcapMaterial({
         matcap:new THREE.TextureLoader().load(redball.src)
-      })
+      });
+      let geometry=new THREE.SphereGeometry(1,1,1);
+      let mesh=new THREE.Mesh(geometry,material)
+
     }
 
     // Animation loop
