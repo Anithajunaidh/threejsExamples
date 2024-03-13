@@ -6,8 +6,8 @@ import FirstThreeJS from '@/components/threejsSamples/threeSceneScroll';
 const RipplePage = () => {
   return (
     <>
-{/* <ThreeSceneRipple/> */}
-<FirstThreeJS/>
+<ThreeSceneRipple/>
+{/* <FirstThreeJS/> */}
 </>
   );
 };

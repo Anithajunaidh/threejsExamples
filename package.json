@@ -63,6 +63,7 @@
     "react-three-fiber": "^6.0.13",
     "redux-persist": "^6.0.0",
     "three": "^0.161.0",
+    "webgl-fluid": "^0.3.7",
     "yup": "^1.2.0",
     "zod": "^3.22.2"
   },

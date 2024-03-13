@@ -2,6 +2,7 @@
 import * as THREE from "three";
 import React, { useRef, useEffect } from "react";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { time } from "drizzle-orm/mysql-core";
 
 const vertexShader = `
 uniform float u_time;
@@ -81,10 +82,10 @@ const ThreeSceneRipple = () => {
           value: 0,
         },
         u_displacement: {
-          value: new THREE.TextureLoader().load('assets/images/brush.png'),
+          value: new THREE.TextureLoader().load('assets/images/award_gradient.png'),
         },
         u_texture: {
-          value: new THREE.TextureLoader().load('assets/images/texture.jpg'),
+          value: new THREE.TextureLoader().load('assets/images/ocean.jpg'),
         },
         u_resolution: {
           value: new THREE.Vector2(window.innerWidth, window.innerHeight),
@@ -110,13 +111,13 @@ const ThreeSceneRipple = () => {
       const material = new THREE.MeshBasicMaterial({
         map: new THREE.TextureLoader().load('assets/images/brush.png'),
         transparent: true,
+        opacity: 0,
         blending: THREE.AdditiveBlending,
         depthTest: false,
         depthWrite: false,
       });
       const mesh = new THREE.Mesh(geometry, material);
-      // mesh.visible = false;
-      //  mesh.rotation.z = 2 * Math.PI * Math.random();
+      mesh.rotation.z = 2 * Math.PI * Math.random();
       scene.add(mesh);
       meshes.push(mesh);
       
@@ -130,37 +131,36 @@ const ThreeSceneRipple = () => {
     const setNewWave = (x, y, index) => {
      // console.log(index, x, y);
       let mesh = meshes[index];
-      // mesh.visible = true;
-      // mesh.position.x = x * 2;
-      // mesh.position.y = y * 2;
-      mesh.scale.x = mesh.scale.y = 1;
+      mesh.position.x = x * 2;
+      mesh.position.y = y * 2;
+     // mesh.scale.x = mesh.scale.y = 1;
       mesh.material.opacity = 1;
       console.log(mesh.position);
     };
-    // const trackMouseMove = () => {
-    //   if (
-    //     Math.abs(mouse.x - prevMouse.current.x) > 0.01 ||
-    //     Math.abs(mouse.y - prevMouse.current.y) > 0.01
-    //   ) {
-    //     setNewWave(mouse.x, mouse.y, currentWave);
-    //     currentWave = (currentWave + 1) % max;
-    //   }
-    //   prevMouse.current.x = mouse.x; // Update previous mouse position
-    //   prevMouse.current.y = mouse.y;
-    // };
     const trackMouseMove = () => {
-      meshes.forEach((mesh, index) => {
-        const x = mouse.x * (index / max) * 10; // Adjust multiplier for sensitivity and range
-        const y = -mouse.y * (index / max) * 10; // Adjust multiplier for sensitivity and range
-        mesh.position.x = x;
-        mesh.position.y = y;
-
-        if (index === currentWave) {
-          setNewWave(x, y, index);
-          currentWave = (currentWave + 1) % max;
-        }
-      });
+      if (
+        Math.abs(mouse.x - prevMouse.current.x) > 0.01 ||
+        Math.abs(mouse.y - prevMouse.current.y) > 0.01
+      ) {
+        setNewWave(mouse.x, mouse.y, currentWave);
+        currentWave = (currentWave + 1) % max;
+      }
+      prevMouse.current.x = mouse.x; // Update previous mouse position
+      prevMouse.current.y = mouse.y;
     };
+    // const trackMouseMove = () => {
+    //   meshes.forEach((mesh, index) => {
+    //     const x = mouse.x * (index / max) * 10; // Adjust multiplier for sensitivity and range
+    //     const y = -mouse.y * (index / max) * 10; // Adjust multiplier for sensitivity and range
+    //     mesh.position.x = x;
+    //     mesh.position.y = y;
+
+    //     if (index === currentWave) {
+    //       setNewWave(x, y, index);
+    //       currentWave = (currentWave + 1) % max;
+    //     }
+    //   });
+    // };
 
     const handleMouseMove = (event) => {
       // Normalize mouse coordinates
@@ -174,15 +174,16 @@ const ThreeSceneRipple = () => {
       meshes.forEach((mesh) => {
         mesh.position.x = mouse.x * 5; // Adjust multiplier for sensitivity
         mesh.position.y = -mouse.y * 5; // Invert y-axis and adjust multiplier
-        // mesh.rotation.z -= 0.2;
-        // mesh.material.opacity *= 0.98;
-        // mesh.scale.x = 0.98 * mesh.scale.x + 0.1;
-        // mesh.scale.y = mesh.scale.x;
+         mesh.rotation.z -= 0.2;
+         mesh.material.opacity = 0.98;
+        //  mesh.scale.x = 0.98 * mesh.scale.x + 0.1;
+         mesh.scale.y = mesh.scale.x;
       });
       //merging  two scenes
       renderer.setRenderTarget(baseTexture);
       renderer.render(scene, camera);
       material1.uniforms.u_displacement.value = baseTexture.texture;
+      material1.uniforms.u_time=material1.uniforms.u_time+0.003;
       renderer.setRenderTarget(null);
       renderer.clear();
       renderer.render(scene1, camera);

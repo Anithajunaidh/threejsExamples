@@ -5,6 +5,7 @@ import { OrbitControls, shaderMaterial } from "@react-three/drei";
 import * as THREE from "three";
 import { data } from "./data";
 import { useEffect, useMemo, useRef } from "react";
+import Fluid from 'webgl-fluid';
 
 const PATHS = data.economics[0].paths;
 const randomRange = (min, max) => Math.random() * (max - min) + min;
@@ -29,7 +30,7 @@ for (let i = 0; i < 100; i++) {
   }
 }
 
-let brainCurves = [];
+export let brainCurves = [];
 PATHS.forEach((path) => {
   let points = [];
   for (let i = 0; i < path.length; i += 3) {
@@ -107,13 +108,14 @@ if(dist<maxDist){
           depthTest={false}
           depthWrite={false}
           blending={THREE.AdditiveBlending}
+        opacity={0.5}
         />
       </mesh>
     </>
   );
 };
 
-const Tubes = ({ allCurves }) => {
+export const Tubes = ({ allCurves }) => {
   return (
     <>
       {allCurves.map((curve, index) => (
@@ -124,7 +126,7 @@ const Tubes = ({ allCurves }) => {
 };
 
 //particles
-const BrainParticles = ({ allCurves }) => {
+export const BrainParticles = ({ allCurves }) => {
   const myPoints = useRef([]);
   const brainGeo = useRef();
   let density = 10;
@@ -162,6 +164,7 @@ let randoms=useMemo(()=>{
         });
       }
     }
+    
   });
 
   useFrame(({ clock }) => {
@@ -246,9 +249,9 @@ const ThreeBrain = () => {
   return (
     <div
       ref={containerRef}
-      style={{ width: "100vw", height: "100vh", overflow: "hidden" }}
+      style={{ width: "100vw", height: "100vh", overflow: "hidden", backgroundColor: 'transparent'  }}
     >
-      <Canvas camera={{ position: [0, 0, 0.3] }}>
+      <Canvas camera={{ position: [0, 0, 0.3] }} style={{backgroundColor: 'transparent' }}>
         <color attach="background" args={["black"]} />
         <ambientLight />
         <pointLight position={[10, 10, 10]} />

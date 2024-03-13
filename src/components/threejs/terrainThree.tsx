@@ -2,13 +2,15 @@
 
 import dat from "dat.gui";
 // pages/threePage.js
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
+import Fluid from 'webgl-fluid';
+
 
 
 const vertexShader = `
@@ -45,6 +47,7 @@ void main() {
 
 
 const TerrainThreeJS = () => {
+  const canvasRef = useRef(null);
   useEffect(() => {
     // Set up Three.js scene
     const scene = new THREE.Scene();
@@ -60,7 +63,8 @@ const TerrainThreeJS = () => {
     const raycaster=new THREE.Raycaster();
 
     renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+    // document.body.appendChild(renderer.domElement);
+    canvasRef.current.appendChild(renderer.domElement);
 
     //texture loader
     const loader = new THREE.TextureLoader();
@@ -134,7 +138,36 @@ const TerrainThreeJS = () => {
     };
     window.addEventListener('mousemove', updateLightPosition);
 
-
+      Fluid(canvasRef.current, {
+        TRIGGER: 'hover',
+        SIM_RESOLUTION: 256,
+        DYE_RESOLUTION: 1024,
+        CAPTURE_RESOLUTION: 512,
+        DENSITY_DISSIPATION: 4,
+        VELOCITY_DISSIPATION: 0.5,
+        PRESSURE: 0.1,
+        PRESSURE_ITERATIONS: 20,
+        CURL: 3,
+        SPLAT_RADIUS: 0.1,
+        SPLAT_FORCE: 6000,
+        SPLAT_COUNT: 0,
+        SHADING: true,
+        COLORFUL: true,
+        COLOR_UPDATE_SPEED: 10,
+        PAUSED: false,
+        BACK_COLOR: { r: 0, g: 0, b: 0 },
+        TRANSPARENT: false,
+        BLOOM: true,
+        BLOOM_ITERATIONS: 8,
+        BLOOM_RESOLUTION: 256,
+        BLOOM_INTENSITY: 0.8,
+        BLOOM_THRESHOLD: 0.6,
+        BLOOM_SOFT_KNEE: 0.7,
+        SUNRAYS: true,
+        SUNRAYS_RESOLUTION: 196,
+        SUNRAYS_WEIGHT: 1.0,
+      });
+  
     //Add post-processing
     // const composer = new EffectComposer(renderer);
     // const renderPass = new RenderPass(scene, camera);
@@ -211,12 +244,12 @@ const TerrainThreeJS = () => {
     // Clean up Three.js objects on component unmount
     return () => {
       window.removeEventListener("resize", handleResize);
-      document.body.removeChild(renderer.domElement);
+     // document.body.removeChild(renderer.domElement);
       window.removeEventListener('mousemove', updateLightPosition); 
     };
   }, []);
 
-  return <div></div>;
+  return <canvas  ref={canvasRef} className="w-full h-screen"></canvas>;
 };
 
 export default TerrainThreeJS;

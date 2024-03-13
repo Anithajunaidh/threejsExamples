@@ -99,7 +99,7 @@ const SecondThreeJS = () => {
     };
   }, []);
 
-  return <div />;
+  return <div/>;
 };
 
 export default SecondThreeJS;
