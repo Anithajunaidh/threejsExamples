@@ -10,6 +10,8 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
 import Fluid from 'webgl-fluid';
+import webGLFluidEnhanced from "webgl-fluid-enhanced";
+import canvas from "../threejsSamples/lusion/canvas";
 
 
 
@@ -57,14 +59,14 @@ const TerrainThreeJS = () => {
       0.001,
       1000
     );
-    const renderer = new THREE.WebGLRenderer();
+    const renderer = new THREE.WebGLRenderer({canvas:canvasRef.current});
     const gui = new dat.GUI();
     const mouse = new THREE.Vector2(0, 0);
     const raycaster=new THREE.Raycaster();
 
     renderer.setSize(window.innerWidth, window.innerHeight);
     // document.body.appendChild(renderer.domElement);
-    canvasRef.current.appendChild(renderer.domElement);
+    //canvasRef.current.appendChild(renderer.domElement);
 
     //texture loader
     const loader = new THREE.TextureLoader();
@@ -138,7 +140,7 @@ const TerrainThreeJS = () => {
     };
     window.addEventListener('mousemove', updateLightPosition);
 
-      Fluid(canvasRef.current, {
+    webGLFluidEnhanced.simulation(canvasRef.current, {
         TRIGGER: 'hover',
         SIM_RESOLUTION: 256,
         DYE_RESOLUTION: 1024,

@@ -29,4 +29,12 @@ export default bundleAnalyzer({
 
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
+      },
+    ],
+  },
 });

@@ -5,7 +5,7 @@ import { OrbitControls, shaderMaterial } from "@react-three/drei";
 import * as THREE from "three";
 import { data } from "./data";
 import { useEffect, useMemo, useRef } from "react";
-import Fluid from 'webgl-fluid';
+import { Fluid } from '@/whatisjery/react-fluid-distortion';
 
 const PATHS = data.economics[0].paths;
 const randomRange = (min, max) => Math.random() * (max - min) + min;
@@ -249,9 +249,10 @@ const ThreeBrain = () => {
   return (
     <div
       ref={containerRef}
-      style={{ width: "100vw", height: "100vh", overflow: "hidden", backgroundColor: 'transparent'  }}
+      style={{ width: "100vw", height: "100vh", overflow: "hidden", backgroundColor:'transparent'}}
     >
-      <Canvas camera={{ position: [0, 0, 0.3] }} style={{backgroundColor: 'transparent' }}>
+      <Canvas camera={{ position: [0, 0, 0.3] }} >
+        <Fluid/>
         <color attach="background" args={["black"]} />
         <ambientLight />
         <pointLight position={[10, 10, 10]} />

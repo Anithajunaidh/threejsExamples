@@ -6,9 +6,10 @@ interface CardProps {
   image: string;
   name: string;
   role: string;
+  className?:string
 }
 
-const ImageCard: React.FC<CardProps> = ({ image, name, role }) => {
+const ImageCard: React.FC<CardProps> = ({ image, name, role,className }) => {
   return (
     <div className="bg-transparent p-4 rounded-lg">
       <div className="relative">
@@ -18,6 +19,7 @@ const ImageCard: React.FC<CardProps> = ({ image, name, role }) => {
          width={250}
          height={500}
          layout="responsive"
+        className={className}
         />
       </div>
       <div className="text-center">

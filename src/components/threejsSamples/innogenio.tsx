@@ -1,41 +1,50 @@
-"use client"
+ "use client"
 
+import { XFluid } from 'luma-fluid-lib';
 import React, { useEffect, useRef } from 'react';
 import Fluid from 'webgl-fluid';
+import webGLFluidEnhanced from 'webgl-fluid-enhanced';
+
 
 
 const InnoText = () => {
   const canvas = useRef(null);
 
   useEffect(() => {
-    Fluid(canvas.current, {
-      TRIGGER: 'hover',
-      SIM_RESOLUTION: 256,
-      DYE_RESOLUTION: 1024,
-      CAPTURE_RESOLUTION: 512,
-      DENSITY_DISSIPATION: 4,
-      VELOCITY_DISSIPATION: 0.5,
-      PRESSURE: 0.1,
-      PRESSURE_ITERATIONS: 20,
-      CURL: 3,
-      SPLAT_RADIUS: 0.1,
-      SPLAT_FORCE: 6000,
-      SPLAT_COUNT: 0,
-      SHADING: true,
-      COLORFUL: true,
-      COLOR_UPDATE_SPEED: 10,
-      PAUSED: false,
-      BACK_COLOR: { r: 0, g: 0, b: 0 },
-      TRANSPARENT: false,
-      BLOOM: true,
-      BLOOM_ITERATIONS: 8,
-      BLOOM_RESOLUTION: 256,
-      BLOOM_INTENSITY: 0.8,
-      BLOOM_THRESHOLD: 0.6,
-      BLOOM_SOFT_KNEE: 0.7,
-      SUNRAYS: true,
-      SUNRAYS_RESOLUTION: 196,
-      SUNRAYS_WEIGHT: 1.0,
+    webGLFluidEnhanced.simulation(canvas.current, {
+      // TRIGGER: 'hover',
+      // SIM_RESOLUTION: 256,
+      // DYE_RESOLUTION: 1024,
+      // CAPTURE_RESOLUTION: 512,
+      // DENSITY_DISSIPATION: 4,
+      // VELOCITY_DISSIPATION: 0.5,
+      // PRESSURE: 0.1,
+      // PRESSURE_ITERATIONS: 20,
+      // CURL: 3,
+      // SPLAT_RADIUS: 0.1,
+      // SPLAT_FORCE: 6000,
+      // SPLAT_COUNT: 0,
+      // SHADING: true,
+      // COLORFUL: true,
+      // COLOR_UPDATE_SPEED: 10,
+      // PAUSED: false,
+      // BACK_COLOR: { r: 0, g: 0, b: 0 },
+       TRANSPARENT: false,
+      // BLOOM: true,
+      // BLOOM_ITERATIONS: 8,
+      // BLOOM_RESOLUTION: 256,
+      // BLOOM_INTENSITY: 0.8,
+      // BLOOM_THRESHOLD: 0.6,
+      // BLOOM_SOFT_KNEE: 0.7,
+      // SUNRAYS: true,
+      // SUNRAYS_RESOLUTION: 196,
+      // SUNRAYS_WEIGHT: 1.0,
+      //       PRESSURE: 0.2,
+      SUNRAYS: false,
+      START_SPLATS: 10,
+      DENSITY_DISSIPATION: 3,
+      CURL: 100,
+
     });
   }, []);
   useEffect(() => {
@@ -58,10 +67,19 @@ const InnoText = () => {
 
   return (
     <div >
-      <canvas ref={canvas} style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background:'transparent'}} />
-      <canvas  id="canvasText" width="600" height="100" style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 1 }} />    </div>
+      <canvas ref={canvas} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background:'transparent'}} />
+      <canvas  id="canvasText" width="600" height="100" style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', backgroundColor:'transparent' }} />    
+      {/* <XFluid
+     logoSrc='https://s2.loli.net/2024/01/29/mRrH5IQYucl4GCp.png'
+     textureSrc='assets/images/award_gradient.png'
+    width={1300} height={800}
+    onError={(error: Error) => console.error(error)}
+/> */}
+</div>
   );
 };
 
 export default InnoText;
+
+
 
